@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ReconhecimentoController } from './reconhecimento.controller';
 import { ReconhecimentoService } from './reconhecimento.service';
-import { ReconhecimentoRepository } from './reconhecimento.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Reconhecimento } from './entities/reconhecimento';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Reconhecimento])],
   controllers: [ReconhecimentoController],
-  providers: [ReconhecimentoService, ReconhecimentoRepository]
+  providers: [ReconhecimentoService]
 })
 export class ReconhecimentoModule {}

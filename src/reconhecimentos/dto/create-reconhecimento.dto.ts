@@ -2,7 +2,7 @@ import { PickType, ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
 import { Reconhecimento } from "../entities/reconhecimento";
 
-export class CreateReconhecimentoDto extends PickType(Reconhecimento, ['uuid', 'id', 'from', 'to', 'message', 'coins'] as const) {
+export class CreateReconhecimentoDto extends PickType(Reconhecimento, ['id', 'from', 'to', 'message', 'coins'] as const) {
     
     @ApiProperty({ example: 'Ciclano da Silva' })
     @IsNotEmpty({ message: "O remetente é obrigatorio!"})

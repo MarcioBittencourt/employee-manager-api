@@ -1,51 +1,29 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ReconhecimentoController } from './reconhecimento.controller';
 import { ReconhecimentoService } from './reconhecimento.service';
-import { ReconhecimentoRepository } from './reconhecimento.repository';
 import { NotFoundException } from '@nestjs/common';
+import { CreateReconhecimentoDto } from './dto/create-reconhecimento.dto';
 
 describe('ReconhecimentoController', () => {
   let controller: ReconhecimentoController;
   let service: ReconhecimentoService;
 
+  const mockReconhecimento = {
+    "id": 1,
+    "from": "Beltrano",
+    "to": "Ciclano",
+    "message": "Excelente trabalho na entrega do projeto, sua dedicação fez toda a diferença!",
+    "coins": 10
+  };
+
   const mockService = {
-    create: jest.fn(dto => ( { id: 1, ...dto})),
-    findAll: jest.fn(() => [
-      {
-        "uuid": "1",
-        "id": 1,
-        "from": "Beltrano",
-        "to": "Ciclano",
-        "message": "Excelente trabalho na entrega do projeto, sua dedicação fez toda a diferença!",
-        "coins": 1
-      }
-    ]),
-    findById: jest.fn(id => {
-      if(id === 1) {
-        return {
-          "uuid": "1",
-          "id": 1,
-          "from": "Beltrano",
-          "to": "Ciclano",
-          "message": "Excelente trabalho na entrega do projeto, sua dedicação fez toda a diferença!",
-          "coins": 1
-        }
-      }
+    create: jest.fn().mockResolvedValue(mockReconhecimento),
+    findAll: jest.fn().mockResolvedValue([mockReconhecimento]),
+    findById: jest.fn().mockImplementation(id => {
+      if(id === 1) return Promise.resolve(mockReconhecimento);
       throw new NotFoundException();
     }),
-    remove: jest.fn(id => {
-      if(id === 1) {
-        return {
-          "uuid": "1",
-          "id": 1,
-          "from": "Beltrano",
-          "to": "Ciclano",
-          "message": "Excelente trabalho na entrega do projeto, sua dedicação fez toda a diferença!",
-          "coins": 1
-        }
-      }
-      throw new NotFoundException();
-    }),
+    remove: jest.fn().mockResolvedValue(mockReconhecimento),
   };
   
   beforeEach(async () => {
@@ -56,9 +34,7 @@ describe('ReconhecimentoController', () => {
           provide: ReconhecimentoService,
           useValue: mockService,
         }, 
-        ReconhecimentoRepository
-        ],
-      
+      ],
     }).compile();
 
     controller = module.get<ReconhecimentoController>(ReconhecimentoController);
@@ -66,8 +42,7 @@ describe('ReconhecimentoController', () => {
   });
 
   it('deve cadastrar um reconhecimento', async () => {
-    const reconhecimento = {
-      "uuid": "1",
+    const dto: CreateReconhecimentoDto = {
       "id": 1,
       "from": "Beltrano",
       "to": "Ciclano",
@@ -75,57 +50,26 @@ describe('ReconhecimentoController', () => {
       "coins": 1
     };
 
-    const resultado = await controller.create(reconhecimento);
-
-    expect(resultado).toEqual({
-      "uuid": "1",
-      "id": 1,
-      "from": "Beltrano",
-      "to": "Ciclano",
-      "message": "Excelente trabalho na entrega do projeto, sua dedicação fez toda a diferença!",
-      "coins": 1
-    });
-    expect(service.create).toHaveBeenCalledWith(reconhecimento);
+    const resultado = await controller.create(dto);
+    expect(resultado).toEqual(mockReconhecimento);
+    expect(service.create).toHaveBeenCalledWith(dto);
   });
 
-  it('deve retornar todos os reconhecimentos', () => {
-    const resultado = controller.findAll();
-    expect(resultado).toEqual([
-      {
-        "uuid": "1",
-        "id": 1,
-        "from": "Beltrano",
-        "to": "Ciclano",
-        "message": "Excelente trabalho na entrega do projeto, sua dedicação fez toda a diferença!",
-        "coins": 1
-      },
-    ]);
+  it('deve retornar todos os reconhecimentos', async () => {
+    const resultado = await controller.findAll();
+    expect(resultado).toEqual([mockReconhecimento]);
     expect(service.findAll).toHaveBeenCalled();
   });
 
-  it('deve retornar um reconhecimento por ID', () => {
-    const result = controller.findById(1);
-    expect(result).toEqual({
-      "uuid": "1",
-      "id": 1,
-      "from": "Beltrano",
-      "to": "Ciclano",
-      "message": "Excelente trabalho na entrega do projeto, sua dedicação fez toda a diferença!",
-      "coins": 1
-    });
+  it('deve retornar um reconhecimento por ID', async () => {
+    const result = await controller.findById(1);
+    expect(result).toEqual(mockReconhecimento);
     expect(service.findById).toHaveBeenCalledWith(1);
   });
 
-  it('deve remover um reconhecimento por ID', () => {
-    const result = controller.remove(1);
-    expect(result).toEqual({
-      "uuid": "1",
-      "id": 1,
-      "from": "Beltrano",
-      "to": "Ciclano",
-      "message": "Excelente trabalho na entrega do projeto, sua dedicação fez toda a diferença!",
-      "coins": 1
-    });
+  it('deve remover um reconhecimento por ID', async () => {
+    const result = await controller.remove(1);
+    expect(result).toEqual(mockReconhecimento);
     expect(service.remove).toHaveBeenCalledWith(1);
   });
 });
