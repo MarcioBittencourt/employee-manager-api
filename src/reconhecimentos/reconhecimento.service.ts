@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { ReconhecimentoRepository } from './reconhecimento.repository';
 import { CreateReconhecimentoDto } from './dto/create-reconhecimento.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Reconhecimento } from './entities/reconhecimento';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ReconhecimentoService {
-    constructor(private readonly repositorio: ReconhecimentoRepository) {}
+    constructor(@InjectRepository(Reconhecimento) private repositorio: Repository<Reconhecimento>) {}
 
-    async create(reconhecimento: CreateReconhecimentoDto): Promise<CreateReconhecimentoDto> {
+    async create(reconhecimentoDto: CreateReconhecimentoDto) {
+        const reconhecimento = this.repositorio.create(reconhecimentoDto)
         return await this.repositorio.save(reconhecimento);
     }
     
@@ -15,11 +18,11 @@ export class ReconhecimentoService {
     }
 
     async findById(id: number) {
-        return await this.repositorio.findById(id);
+        return await this.repositorio.findOneByOrFail({id});
     }
 
     async remove(id: number) {
-        await this.repositorio.delete(id);
-        return `O reconhecimento ${id} foi removido com sucesso`;
+        const reconhecimento = await this.findById(id);
+        return this.repositorio.remove(reconhecimento);
     }
 }

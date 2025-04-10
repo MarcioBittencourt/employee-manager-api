@@ -1,9 +1,15 @@
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity()
 export class Reconhecimento {
-    uuid: string;
+    @PrimaryGeneratedColumn()
     id: number;
+    @Column()
     from: string;
+    @Column()
     to: string;
-    message: string; 
+    @Column()
+    message: string;
+    @Column() 
     coins: number; 
 }
