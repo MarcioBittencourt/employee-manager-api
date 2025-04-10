@@ -1,6 +1,6 @@
 ## Description
 
-Este codigo foi gerado para o desafio da YouDeserve.
+Este codigo foi desenvolvido para o desafio da YouDeserve.
 
 O desafio escolhido foi o desafio 2: Backend (NestJS)
 
@@ -69,8 +69,9 @@ $ npm run test
 ```
 
 ## ✅ Endpoints disponíveis
-Método	Rota	              Descrição
-POST	  /recognitions	      Criar novo reconhecimento
-GET	    /recognitions	      Listar todos reconhecimentos
-GET	    /recognitions/:id	  Buscar por ID
-DELETE	/recognitions/:id	  Remover reconhecimento por ID
+| Método | Rota                 | Descrição                        |
+|--------|----------------------|----------------------------------|
+| POST   | /recognitions        | Criar novo reconhecimento        |
+| GET    | /recognitions        | Listar todos reconhecimentos     |
+| GET    | /recognitions/:id    | Buscar por ID                    |
+| DELETE | /recognitions/:id    | Remover reconhecimento por ID    |
