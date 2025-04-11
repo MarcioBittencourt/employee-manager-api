@@ -5,24 +5,29 @@ Este codigo foi desenvolvido para o desafio da YouDeserve.
 O desafio escolhido foi o desafio 2: Backend (NestJS)
 
 Objetivo: Criar uma API REST simples utilizando NestJS para gerenciar reconhecimentos entre
-colaboradores.
-Funcionalidades:
-- CRUD de reconhecimentos com os campos:
+colaboradores.  
+
+Funcionalidades:  
+
+CRUD de reconhecimentos com os campos:
  - id
  - from (quem enviou)
  - to (quem recebeu)
  - message (mensagem do reconhecimento)
- - coins (quantidade de moedas enviadas)
-- Rotas esperadas:
+ - coins (quantidade de moedas enviadas)  
+
+Rotas esperadas:  
  - POST /recognitions
  - GET /recognitions
  - GET /recognitions/:id
- - DELETE /recognitions/:id
-Requisitos:
+ - DELETE /recognitions/:id  
+
+Requisitos:  
 - Utilizar DTOs e validação com class-validator
 - Organização de módulos, serviços e controllers
-- Persistência pode ser em array (in-memory) ou SQLite
-Diferenciais:
+- Persistência pode ser em array (in-memory) ou SQLite  
+
+Diferenciais:  
 - Documentação da API com Swagger
 - Testes unitários simples
 
